@@ -1,0 +1,11 @@
+windows2016min-virtualbox.box
+iso
+output-virtualbox-iso
+output-hyperv-iso
+output-qemu
+*.iso
+*.box
+.kitchen
+vendor
+Vagrantfile
+.vagrant/

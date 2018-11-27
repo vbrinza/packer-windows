@@ -1,0 +1,43 @@
+{
+  "builders": [
+    {
+      "type": "virtualbox-ovf",
+      "vboxmanage": [
+        [ "modifyvm", "{{.Name}}", "--memory", "2048" ],
+        [ "modifyvm", "{{.Name}}", "--vram", "48" ],
+        [ "modifyvm", "{{.Name}}", "--cpus", "2" ]
+      ],
+      "source_path": "../packer-templates/output-virtualbox-iso/packer-virtualbox-iso-1542982040.ovf",
+      "output_directory": "./output-window2016-with-updates/",
+      "guest_additions_mode": "{{ user `guest_additions_mode` }}",
+      "headless": "{{ user `headless` }}",
+      "communicator": "winrm",
+      "winrm_username": "vagrant",
+      "winrm_password": "vagrant",
+      "winrm_timeout": "12h",
+      "vm_name": "win2016-with-updates",
+      "shutdown_command": "C:/Windows/Panther/Unattend/packer_shutdown.bat",
+      "shutdown_timeout": "15m",
+      "floppy_files": [
+        "answer_files/2016/Autounattend.xml",
+        "scripts/winrm.ps1"        
+      ]
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "windows-restart",
+      "restart_timeout": "15m"
+    },
+    {
+      "type": "powershell",
+      "script": "scripts/install-choco.ps1",
+      "elevated_user": "vagrant",
+      "elevated_password": "vagrant"
+    }
+  ],
+  "variables": {
+    "guest_additions_mode": "attach",
+    "headless": "true"
+  }
+}
