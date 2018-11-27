@@ -1,0 +1,26 @@
+{
+  "builders": [{
+      "type": "openstack",
+      "image_name": "packer-test-image2",
+      "source_image_name": "packer-test-image1",
+      "flavor": "1vCPU-1G-100G",
+      "networks": "4be6cd8f-fe42-4d09-9318-a5297ab619e3",
+      "security_groups": "k8s-cluster-1",
+      "ssh_keypair_name": "ci-cd-team",
+      "ssh_private_key_file": "ci-cd-team.pem",
+      "ssh_username": "centos"
+    }
+  ],
+  "provisioners": [{
+    "type": "shell",
+    "inline": [
+      "sleep 30",
+      "sudo yum update -y",
+      "sudo yum install vim -y",
+      "sudo yum install epel-release -y",
+      "sudo yum install -y nginx",
+      "sudo systemctl enable nginx",
+      "sudo systemctl start nginx"
+    ]
+  }]
+}
